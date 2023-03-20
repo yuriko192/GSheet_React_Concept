@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {SetStateAction, useEffect, useState} from 'react'
 import './App.scss'
 import GSheetIcon from "./assets/icons/GSheetIcon";
 import TrashIcon from "./assets/icons/TrashIcon";
@@ -100,6 +100,7 @@ function renderConnectFlowNodePage(
 }
 
 function renderExportFilePage(
+    contextState: CustomContextType,
     setContextState: (value: (((prevState: CustomContextType) => CustomContextType) | CustomContextType)) => void
 ) {
     function onConnectClicked() {
@@ -115,15 +116,38 @@ function renderExportFilePage(
         })
     }
 
+    const currUser = contextState.User;
+
+    // const [selectedOption, setSelectedOption] = useState('');
+    // const handleOptionChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+    //     setSelectedOption(event.target.value);
+    // };
+
     return (
-        <div className="p-3 space-y-3">
-            <div>
-                <div>Google Account</div>
-                <div>Account Name</div>
+        <div className="space-y-3">
+            <div className="flex flex-col space-y-2">
+                <div className="font-semibold text-[11px]">
+                    Google Account
+                </div>
+                <div>
+                    <select id="dropdown" value={currUser.id}
+                            className="flex content-between align-middle p-2 pl-2.5 w-full border-[1px] rounded-[5px]"
+                    >
+                        <option value={currUser.id} className="font-medium text-[11px]">{currUser.name}</option>
+                    </select>
+                </div>
             </div>
-            <div>
-                <div>File</div>
-                <div>SheetName</div>
+            <div className="flex flex-col space-y-2">
+                <div className="font-semibold text-[11px]">
+                    File
+                </div>
+                <div>
+                    <select id="dropdown" value={currUser.id}
+                            className="flex content-between align-middle p-2 pl-2.5 w-full border-[1px] rounded-[5px]"
+                    >
+                        <option value="Test" className="font-medium text-[11px]">SheetName</option>
+                    </select>
+                </div>
             </div>
             <button onClick={onConnectClicked}
                     className="flex justify-center items-center bg-[#2483F3] w-full text-white p-2.5 text-[11px] font-semibold rounded-[5px]">
@@ -161,7 +185,7 @@ function App() {
             PageContent = renderConnectFlowNodePage(setContextState);
             break;
         case PAGE_STATE.SUCCESS:
-            PageContent = renderExportFilePage(setContextState);
+            PageContent = renderExportFilePage(contextState,setContextState);
             break;
 
     }
