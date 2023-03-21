@@ -5,6 +5,7 @@ import TrashIcon from "./assets/icons/TrashIcon";
 import GIcon from "./assets/icons/GIcon";
 import {CustomContextType, initializeContext, UserType} from "./types";
 import DBIcon from "./assets/icons/DBIcon";
+import CloseIcon from "./assets/icons/CloseIcon";
 
 const PAGE_STATE = {
     LOADING: 0,
@@ -130,8 +131,8 @@ function renderExportFilePage(
                     Google Account
                 </div>
                 <div>
-                    <select id="dropdown" value={currUser.id}
-                            className="flex content-between align-middle p-2 pl-2.5 w-full border-[1px] rounded-[5px]"
+                    <select value={currUser.id}
+                            className="flex align-middle p-2 pl-2.5 w-full border-[1px] rounded-[5px]"
                     >
                         <option value={currUser.id} className="font-medium text-[11px]">{currUser.name}</option>
                     </select>
@@ -139,14 +140,22 @@ function renderExportFilePage(
             </div>
             <div className="flex flex-col space-y-2">
                 <div className="font-semibold text-[11px]">
+
                     File
                 </div>
                 <div>
-                    <select id="dropdown" value={currUser.id}
-                            className="flex content-between align-middle p-2 pl-2.5 w-full border-[1px] rounded-[5px]"
-                    >
-                        <option value="Test" className="font-medium text-[11px]">SheetName</option>
-                    </select>
+                    <div className="flex align-middle p-2 pl-2.5 w-full border-[1px] rounded-[5px] space-x-2">
+                        <span className="flex flex-grow items-center space-x-2">
+                             <GSheetIcon width={20}/>
+                            <span className="font-medium text-[11px]">SheetName</span>
+                        </span>
+                        <select value={currUser.id}
+                                className=""
+                        >
+                            <option value="Test" className="font-medium text-[11px]">Tab 1</option>
+                        </select>
+                        <CloseIcon/>
+                    </div>
                 </div>
             </div>
             <button onClick={onConnectClicked}
@@ -185,7 +194,7 @@ function App() {
             PageContent = renderConnectFlowNodePage(setContextState);
             break;
         case PAGE_STATE.SUCCESS:
-            PageContent = renderExportFilePage(contextState,setContextState);
+            PageContent = renderExportFilePage(contextState, setContextState);
             break;
 
     }
