@@ -1,4 +1,3 @@
-
 export const PAGE_STATE = {
     LOADING: 0,
     NOT_LOGGED_IN: 1,

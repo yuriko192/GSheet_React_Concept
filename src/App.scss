@@ -7,11 +7,4 @@ button{
     border-radius: 4px;
     background-color: #2483F3;
   }
-
-  &.Secondary{
-    @apply font-medium;
-    color: #262626;
-    font-size: 10px;
-    background-color: #F5F5F5;
-  }
 }

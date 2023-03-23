@@ -62,12 +62,10 @@ function renderLoginPage(
                     </div>
                 </div>
             </div>
-            <div>
-                <button onClick={onConnectClicked}
-                        className="Primary px-2.5 py-1">
-                    Connect
-                </button>
-            </div>
+            <button onClick={onConnectClicked}
+                    className="Primary px-2.5 py-1">
+                Connect
+            </button>
         </div>
     )
 }
@@ -157,43 +155,39 @@ function renderExportFilePage(
                 <div className="font-semibold text-[11px]">
                     Google Account
                 </div>
-                <div>
-                    <Select
-                        defaultValue="John"
-                        style={{width: '100%'}}
-                        options={[
-                            {value: 'John', label: 'John Doe'},
-                        ]}
-                    />
-                </div>
+                <Select
+                    defaultValue="John"
+                    style={{width: '100%'}}
+                    options={[
+                        {value: 'John', label: 'John Doe'},
+                    ]}
+                />
             </div>
             <div className="flex flex-col space-y-2">
                 <div className="font-semibold text-[11px]">
                     File
                 </div>
-                <div>
-                    <div className="w-full flex items-center p-2 pl-2.5 border-[1px] rounded-[5px] space-x-2">
+                <div className="w-full flex items-center p-2 pl-2.5 border-[1px] rounded-[5px] space-x-2">
                         <span className="flex flex-grow items-center space-x-2">
                              <GSheetIcon width={20}/>
                             <span className="font-medium text-[11px]">SheetName</span>
                         </span>
-                        <Tooltip title={TabSelectionList} arrow={false} color="#FFFFFF" trigger="click"
-                                 placement="bottomLeft">
-                            <button
-                                className="px-1.5 py-1 space-x-1 flex items-center bg-[#F5F5F5] text-[#848484] rounded-full">
+                    <Tooltip title={TabSelectionList} arrow={false} color="#FFFFFF" trigger="click"
+                             placement="bottomLeft">
+                        <button
+                            className="px-1.5 py-1 space-x-1 flex items-center bg-[#F5F5F5] text-[#848484] rounded-full">
                                 <span className="font-semibold text-[10px] ml-1.5">
                                     {contextState.SelectedSheet.label ? contextState.SelectedSheet.label : "Select Tab"}
                                 </span>
-                                <span className="w-4"><ChevronDownIcon/></span>
-                            </button>
-                        </Tooltip>
-                        <span onClick={() => {
-                            onTabChange(-1, "")
-                        }}>
+                            <span className="w-4"><ChevronDownIcon/></span>
+                        </button>
+                    </Tooltip>
+                    <span onClick={() => {
+                        onTabChange(-1, "")
+                    }}>
                             <CloseIcon/>
                         </span>
 
-                    </div>
                 </div>
             </div>
             <div className="flex flex-col space-y-2">
@@ -250,23 +244,27 @@ function App() {
         setContextState(initializeContext())
     }
 
+    const PageHeader = (
+        <div className="w-full flex items-center">
+            <div className="p-2 rounded-[5px] bg-[#ebf7f2]">
+                <GSheetIcon/>
+            </div>
+            <div className="ml-3 font-semibold text-[13px]">
+                Export to Google Sheets
+            </div>
+            <div className="flex-grow"></div>
+            <div>
+                <button onClick={resetPage} className="p-1 rounded-[4px] bg-[#F0F0F0]">
+                    <TrashIcon/>
+                </button>
+            </div>
+        </div>
+    )
+
     return (
         <div className="bg-blue-50 p-5 min-h-screen">
             <div className="w-[354px] flex flex-col bg-white border-[1px] rounded-[8px] p-4 space-y-3">
-                <div className="w-full flex items-center">
-                    <div className="p-2 rounded-[5px] bg-[#ebf7f2]">
-                        <GSheetIcon/>
-                    </div>
-                    <div className="ml-3 font-semibold text-[13px]">
-                        Export to Google Sheets
-                    </div>
-                    <div className="flex-grow"></div>
-                    <div>
-                        <button onClick={resetPage} className="p-1 rounded-[4px] bg-[#F0F0F0]">
-                            <TrashIcon/>
-                        </button>
-                    </div>
-                </div>
+                {PageHeader}
                 {PageContent}
             </div>
         </div>

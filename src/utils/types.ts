@@ -1,8 +1,9 @@
-export interface CustomContextType{
+export interface CustomContextType {
     User: UserType;
     FlowNode: FlowNodeType;
     SelectedSheet: SheetNodeType;
 }
+
 export function initializeContext(): CustomContextType {
     return {
         User: {
@@ -14,23 +15,24 @@ export function initializeContext(): CustomContextType {
             id: 0,
         },
         SelectedSheet: {
-            id:-1,
+            id: -1,
             label: "",
         }
     };
 }
+
 export interface UserType {
-    id : number;
+    id: number;
     name: string;
     email: string;
 }
 
 export interface FlowNodeType {
-    id : number;
+    id: number;
 }
 
 export interface SheetNodeType {
-    id : number;
+    id: number;
     label: string;
     LastExportDate?: Date;
 }
