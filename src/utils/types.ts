@@ -12,7 +12,6 @@ export function initializeContext(): CustomContextType {
         },
         FlowNode: {
             id: 0,
-            url: "",
         },
         SelectedSheet: {
             id:-1,
@@ -28,7 +27,6 @@ export interface UserType {
 
 export interface FlowNodeType {
     id : number;
-    url: string;
 }
 
 export interface SheetNodeType {

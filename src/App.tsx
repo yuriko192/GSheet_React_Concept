@@ -64,7 +64,7 @@ function renderLoginPage(
             </div>
             <div>
                 <button onClick={onConnectClicked}
-                        className="bg-[#2483F3] rounded-[4px] px-2.5 py-[0.40625rem] text-white font-semibold text-[10px]">
+                        className="Primary px-2.5 py-1">
                     Connect
                 </button>
             </div>
@@ -81,7 +81,6 @@ function renderConnectFlowNodePage(
                 ...prevContext,
                 FlowNode: {
                     id: 1,
-                    url: "http://google.com",
                 }
             }
             return newContext
@@ -90,8 +89,8 @@ function renderConnectFlowNodePage(
 
     return (
         <button onClick={onConnectClicked}
-                className="flex space-x-1 justify-center items-center  bg-[#F5F5F5] rounded-full text-[11px] text-[#262626] font-medium w-full h-8">
-            <span className="w-4"><DBIcon/> </span>
+                className="flex space-x-1 items-center  bg-[#F5F5F5] rounded-full text-[11px] text-[#262626] font-medium w-full h-8">
+            <DBIcon/>
             <span>Connect Flow Node to Import to Google Sheets</span>
         </button>
     )
@@ -130,22 +129,22 @@ function renderExportFilePage(
     const items = ['Tab 1', 'Tab 2', 'Tab 3'];
 
     const TabSelectionList = (
-        <div className="w-[170px]">
+        <div className="w-[154px] flex flex-col">
             <div className="flex align-middle px-2 py-1.5 border-[1px] rounded-[5px]">
                 <SearchIcon/>
                 <input
                     placeholder="Search"
-                    className="w-full h-4 ml-2 outline-none text-black"
+                    className="w-full h-4 ml-1 outline-none text-black text-[10px]"
                 />
             </div>
             {items.map((item, idx) => (
                 <button key={item}
-                        className="text-black px-1 py-1.5 flex items-center text-left w-full"
+                        className="w-full flex text-black px-1 py-1.5 items-center text-left"
                         onClick={() => {
                             onTabChange(idx, item)
                         }}
                 >
-                    <span className="ml-2 flex-grow">{item}</span>
+                    <span className="ml-2 flex-grow text-[11px]">{item}</span>
                     {idx === contextState.SelectedSheet.id && <CheckMarkIcon/>}
                 </button>
             ))}
@@ -173,7 +172,7 @@ function renderExportFilePage(
                     File
                 </div>
                 <div>
-                    <div className="flex items-center p-2 pl-2.5 w-full border-[1px] rounded-[5px] space-x-2">
+                    <div className="w-full flex items-center p-2 pl-2.5 border-[1px] rounded-[5px] space-x-2">
                         <span className="flex flex-grow items-center space-x-2">
                              <GSheetIcon width={20}/>
                             <span className="font-medium text-[11px]">SheetName</span>
@@ -199,7 +198,7 @@ function renderExportFilePage(
             </div>
             <div className="flex flex-col space-y-2">
                 <button onClick={onExportClicked}
-                        className="flex justify-center items-center bg-[#2483F3] w-full text-white p-2.5 text-[11px] font-semibold rounded-[5px] disabled:opacity-40"
+                        className="Primary w-full p-2.5 disabled:opacity-40"
                         disabled={contextState.SelectedSheet.id == -1}
                 >
                     <span>Export</span>
@@ -253,12 +252,10 @@ function App() {
 
     return (
         <div className="bg-blue-50 p-5 min-h-screen">
-            <div className="w-[354px] bg-white border-[1px] rounded-[8px] p-4 flex flex-col space-y-3">
-                <div className="flex w-full items-center">
+            <div className="w-[354px] flex flex-col bg-white border-[1px] rounded-[8px] p-4 space-y-3">
+                <div className="w-full flex items-center">
                     <div className="p-2 rounded-[5px] bg-[#ebf7f2]">
-                        <div className="w-4">
-                            <GSheetIcon/>
-                        </div>
+                        <GSheetIcon/>
                     </div>
                     <div className="ml-3 font-semibold text-[13px]">
                         Export to Google Sheets
@@ -266,9 +263,7 @@ function App() {
                     <div className="flex-grow"></div>
                     <div>
                         <button onClick={resetPage} className="p-1 rounded-[4px] bg-[#F0F0F0]">
-                            <div className="w-4">
-                                <TrashIcon/>
-                            </div>
+                            <TrashIcon/>
                         </button>
                     </div>
                 </div>
