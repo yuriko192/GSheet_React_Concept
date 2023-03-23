@@ -1,4 +1,4 @@
-import {SetStateAction, useEffect, useState} from 'react'
+import React, {SetStateAction, useEffect, useState} from 'react'
 import './App.scss'
 import GSheetIcon from "./assets/icons/GSheetIcon";
 import TrashIcon from "./assets/icons/TrashIcon";
@@ -6,6 +6,10 @@ import GIcon from "./assets/icons/GIcon";
 import {CustomContextType, initializeContext, UserType} from "./types";
 import DBIcon from "./assets/icons/DBIcon";
 import CloseIcon from "./assets/icons/CloseIcon";
+import {Button, Select, Tooltip} from "antd";
+import SearchIcon from "./assets/icons/SearchIcon";
+import CheckMarkIcon from "./assets/icons/CheckMarkIcon";
+import ChevronDownIcon from "./assets/icons/ChevronDownIcon";
 
 const PAGE_STATE = {
     LOADING: 0,
@@ -104,25 +108,54 @@ function renderExportFilePage(
     contextState: CustomContextType,
     setContextState: (value: (((prevState: CustomContextType) => CustomContextType) | CustomContextType)) => void
 ) {
-    function onConnectClicked() {
+    function onExportClicked() {
         setContextState(prevContext => {
-            const newContext = {
+            const prevSheet = prevContext.SelectedSheet
+
+            return {
                 ...prevContext,
-                FlowNode: {
-                    id: 1,
-                    url: "http://google.com",
+                SelectedSheet: {
+                    ...prevSheet,
+                    LastExportDate: new Date()
                 }
             }
-            return newContext
         })
     }
 
-    const currUser = contextState.User;
+    function onTabChange(idx:number, item:string) {
+        setContextState(prevContext => {
+            return {
+                ...prevContext,
+                SelectedSheet: {
+                    id: idx,
+                    label: item,
+                }
+            }
+        })
+    }
 
-    // const [selectedOption, setSelectedOption] = useState('');
-    // const handleOptionChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-    //     setSelectedOption(event.target.value);
-    // };
+    const items = ['Tab 1', 'Tab 2', 'Tab 3'];
+
+    const TabSelectionList = (
+        <div className="w-[170px]">
+            <div className="flex align-middle px-2 py-1.5 border-[1px] rounded-[5px]">
+                <SearchIcon/>
+                <input
+                    placeholder="Search"
+                    className="w-full h-4 ml-2 outline-none text-black"
+                />
+            </div>
+            {items.map((item, idx) => (
+                <button key={item}
+                     className="text-black px-1 py-1.5 flex items-center text-left w-full"
+                        onClick={()=>{onTabChange(idx,item)}}
+                >
+                    <span className="ml-2 flex-grow">{item}</span>
+                    {idx === contextState.SelectedSheet.id && <CheckMarkIcon/>}
+                </button>
+            ))}
+        </div>
+    )
 
     return (
         <div className="space-y-3">
@@ -131,37 +164,54 @@ function renderExportFilePage(
                     Google Account
                 </div>
                 <div>
-                    <select value={currUser.id}
-                            className="flex align-middle p-2 pl-2.5 w-full border-[1px] rounded-[5px]"
-                    >
-                        <option value={currUser.id} className="font-medium text-[11px]">{currUser.name}</option>
-                    </select>
+                    <Select
+                        defaultValue="John"
+                        style={{ width: '100%' }}
+                        options={[
+                            { value: 'John', label: 'John Doe' },
+                        ]}
+                    />
                 </div>
             </div>
             <div className="flex flex-col space-y-2">
                 <div className="font-semibold text-[11px]">
-
                     File
                 </div>
                 <div>
-                    <div className="flex align-middle p-2 pl-2.5 w-full border-[1px] rounded-[5px] space-x-2">
+                    <div className="flex items-center p-2 pl-2.5 w-full border-[1px] rounded-[5px] space-x-2">
                         <span className="flex flex-grow items-center space-x-2">
                              <GSheetIcon width={20}/>
                             <span className="font-medium text-[11px]">SheetName</span>
                         </span>
-                        <select value={currUser.id}
-                                className=""
-                        >
-                            <option value="Test" className="font-medium text-[11px]">Tab 1</option>
-                        </select>
-                        <CloseIcon/>
+                        <Tooltip title={TabSelectionList} arrow={false} color="#FFFFFF" trigger="click"
+                                 placement="bottomLeft">
+                            <button className="px-1.5 py-1 space-x-1 flex items-center bg-[#F5F5F5] text-[#848484] rounded-full">
+                                <span className="font-semibold text-[10px] ml-1.5">
+                                    {contextState.SelectedSheet.label ? contextState.SelectedSheet.label  : "Select Tab"}
+                                </span>
+                                <span className="w-4"><ChevronDownIcon/></span>
+                            </button>
+                        </Tooltip>
+                        <span onClick={()=>{onTabChange(-1,"")}}>
+                            <CloseIcon/>
+                        </span>
+
                     </div>
                 </div>
             </div>
-            <button onClick={onConnectClicked}
-                    className="flex justify-center items-center bg-[#2483F3] w-full text-white p-2.5 text-[11px] font-semibold rounded-[5px]">
-                <span>Export</span>
-            </button>
+            <div className="flex flex-col space-y-2">
+                <button onClick={onExportClicked}
+                        className="flex justify-center items-center bg-[#2483F3] w-full text-white p-2.5 text-[11px] font-semibold rounded-[5px] disabled:opacity-40"
+                        disabled={contextState.SelectedSheet.id==-1}
+                >
+                    <span>Export</span>
+                </button>
+                {null != contextState.SelectedSheet.LastExportDate &&
+                    <div className="flex justify-center">
+                        <span className="text-[#848484] text-medium text-[10px]">Last export 14h ago</span>
+                    </div>
+                }
+            </div>
         </div>
     )
 }
@@ -196,7 +246,6 @@ function App() {
         case PAGE_STATE.SUCCESS:
             PageContent = renderExportFilePage(contextState, setContextState);
             break;
-
     }
 
     function resetPage() {
