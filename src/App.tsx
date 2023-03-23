@@ -1,23 +1,16 @@
-import React, {SetStateAction, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './App.scss'
 import GSheetIcon from "./assets/icons/GSheetIcon";
 import TrashIcon from "./assets/icons/TrashIcon";
 import GIcon from "./assets/icons/GIcon";
-import {CustomContextType, initializeContext, UserType} from "./types";
+import {CustomContextType, initializeContext} from "./utils/types";
 import DBIcon from "./assets/icons/DBIcon";
 import CloseIcon from "./assets/icons/CloseIcon";
-import {Button, Select, Tooltip} from "antd";
+import {Select, Tooltip} from "antd";
 import SearchIcon from "./assets/icons/SearchIcon";
 import CheckMarkIcon from "./assets/icons/CheckMarkIcon";
 import ChevronDownIcon from "./assets/icons/ChevronDownIcon";
-
-const PAGE_STATE = {
-    LOADING: 0,
-    NOT_LOGGED_IN: 1,
-    NOT_CONNECTED: 2,
-    SUCCESS: 3,
-}
-const CUSTOM_CONTEXT_KEY = "CustomContext"
+import {CUSTOM_CONTEXT_KEY, PAGE_STATE} from "./utils/const";
 
 function switchPage(
     context: CustomContextType,
@@ -97,7 +90,7 @@ function renderConnectFlowNodePage(
 
     return (
         <button onClick={onConnectClicked}
-                className="flex space-x-1 justify-center items-center  bg-[#F5F5F5] rounded-full connectFlowConnectButton w-full h-8">
+                className="flex space-x-1 justify-center items-center  bg-[#F5F5F5] rounded-full text-[11px] text-[#262626] font-medium w-full h-8">
             <span className="w-4"><DBIcon/> </span>
             <span>Connect Flow Node to Import to Google Sheets</span>
         </button>
@@ -122,7 +115,7 @@ function renderExportFilePage(
         })
     }
 
-    function onTabChange(idx:number, item:string) {
+    function onTabChange(idx: number, item: string) {
         setContextState(prevContext => {
             return {
                 ...prevContext,
@@ -147,8 +140,10 @@ function renderExportFilePage(
             </div>
             {items.map((item, idx) => (
                 <button key={item}
-                     className="text-black px-1 py-1.5 flex items-center text-left w-full"
-                        onClick={()=>{onTabChange(idx,item)}}
+                        className="text-black px-1 py-1.5 flex items-center text-left w-full"
+                        onClick={() => {
+                            onTabChange(idx, item)
+                        }}
                 >
                     <span className="ml-2 flex-grow">{item}</span>
                     {idx === contextState.SelectedSheet.id && <CheckMarkIcon/>}
@@ -166,9 +161,9 @@ function renderExportFilePage(
                 <div>
                     <Select
                         defaultValue="John"
-                        style={{ width: '100%' }}
+                        style={{width: '100%'}}
                         options={[
-                            { value: 'John', label: 'John Doe' },
+                            {value: 'John', label: 'John Doe'},
                         ]}
                     />
                 </div>
@@ -185,14 +180,17 @@ function renderExportFilePage(
                         </span>
                         <Tooltip title={TabSelectionList} arrow={false} color="#FFFFFF" trigger="click"
                                  placement="bottomLeft">
-                            <button className="px-1.5 py-1 space-x-1 flex items-center bg-[#F5F5F5] text-[#848484] rounded-full">
+                            <button
+                                className="px-1.5 py-1 space-x-1 flex items-center bg-[#F5F5F5] text-[#848484] rounded-full">
                                 <span className="font-semibold text-[10px] ml-1.5">
-                                    {contextState.SelectedSheet.label ? contextState.SelectedSheet.label  : "Select Tab"}
+                                    {contextState.SelectedSheet.label ? contextState.SelectedSheet.label : "Select Tab"}
                                 </span>
                                 <span className="w-4"><ChevronDownIcon/></span>
                             </button>
                         </Tooltip>
-                        <span onClick={()=>{onTabChange(-1,"")}}>
+                        <span onClick={() => {
+                            onTabChange(-1, "")
+                        }}>
                             <CloseIcon/>
                         </span>
 
@@ -202,7 +200,7 @@ function renderExportFilePage(
             <div className="flex flex-col space-y-2">
                 <button onClick={onExportClicked}
                         className="flex justify-center items-center bg-[#2483F3] w-full text-white p-2.5 text-[11px] font-semibold rounded-[5px] disabled:opacity-40"
-                        disabled={contextState.SelectedSheet.id==-1}
+                        disabled={contextState.SelectedSheet.id == -1}
                 >
                     <span>Export</span>
                 </button>
